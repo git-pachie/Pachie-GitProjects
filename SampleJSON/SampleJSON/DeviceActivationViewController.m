@@ -8,6 +8,7 @@
 
 #import "DeviceActivationViewController.h"
 #import "HomeTableViewController.h"
+#import "TestViewController.h"
 
 
 
@@ -86,13 +87,11 @@
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
         
-        HomeTableViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"home"];
+        TestViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"register"];
         [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-        vc.deviceGUID = _deviceGUID;
-        vc.phoneNumber = _phonNumber;
         
-        [self presentViewController:vc animated:YES completion:nil];
         
+        [self dismissViewControllerAnimated:NO completion:nil];
 
         
     }

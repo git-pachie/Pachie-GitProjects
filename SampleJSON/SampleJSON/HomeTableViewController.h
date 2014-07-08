@@ -10,7 +10,9 @@
 
 @interface HomeTableViewController : UITableViewController
 
-@property (nonatomic, strong) NSString *deviceGUID;
-@property (nonatomic, strong) NSString *phoneNumber;
+@property (nonatomic, strong) NSString *DeviceGUID;
+@property (nonatomic, strong) NSString *PhoneNumber;
+@property (nonatomic, strong) NSString *Email;
+@property (nonatomic, strong) NSString *IsDeviceActivated;
 
 @end

@@ -7,6 +7,8 @@
 //
 
 #import "HomeTableViewController.h"
+#import "TestViewController.h"
+#import "DeviceActivationViewController.h"
 
 @interface HomeTableViewController ()
 
@@ -14,7 +16,7 @@
 
 @implementation HomeTableViewController
 
-@synthesize deviceGUID;
+@synthesize DeviceGUID;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -29,16 +31,63 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"Device ID in Home : %@", deviceGUID);
+    NSString *uniqueIdentifier = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     
-    NSLog(@"Phone Number in Home : %@", _phoneNumber);
+    DeviceGUID = uniqueIdentifier;
+    
+    NSString *url =[NSString stringWithFormat:@"http://www.riverwayauto.com:1980/WcfService2/Service1.svc/GetUserByDeviceID/%@",DeviceGUID];
+    
+    NSData *allCoursesData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:url]];
+    
+    NSError *error;
+    NSMutableDictionary *allCourses = [NSJSONSerialization JSONObjectWithData:allCoursesData options:NSJSONReadingMutableContainers error:&error];
+    
+    if (error) {
+        NSLog(@"%@",[error localizedDescription]);
+    }
+    else {
+        //NSArray *monday = allCourses[@"Monday"];
+        for ( NSDictionary *user in allCourses )
+        {
+            NSLog(@"Checking if device is already registered with device id %@", DeviceGUID);
+            //NSLog(@"Title: %@", theCourse[@"title"] );
+            
+            DeviceGUID = user[@"DeviceGUID"];
+            _Email = user[@"Email"];
+            _PhoneNumber = user[@"PhoneNumber"];
+            _IsDeviceActivated = user[@"isDeviceActivated"];
+            
+        }
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+        if ([_IsDeviceActivated isEqualToString:@"NO"]) {
+            DeviceActivationViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"acid"];
+            [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+            vc.deviceGUID = DeviceGUID;
+            vc.emailAddress = _Email;
+            
+            
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+        else if ([_IsDeviceActivated isEqualToString:@"YES"])
+        {
+            return;
+        }
+        else
+        {
+            
+            TestViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"register"];
+            [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+            
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+        
+        
+        
+        
+    }
     
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning

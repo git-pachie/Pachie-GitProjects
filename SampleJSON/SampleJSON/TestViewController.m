@@ -38,7 +38,22 @@
     [_txtEmailAddress setText:@""];
     [_txtPhoneNumber setText:@""];
     
+    if ([_SuccessRegistration isEqualToString:@"YES"]) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    }
+    else{
+//        UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"View did appear"
+//                                                    message:@"view did appear" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+//        
+//        [mes show];
+        NSLog(@"SuccessRegistration :%@",_SuccessRegistration);
+    }
+    
+
 }
+
+
 
 - (void)viewDidLoad
 {

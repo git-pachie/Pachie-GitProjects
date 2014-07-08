@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSString *PhoneNumber;
 @property (nonatomic, strong) NSString *Email;
 @property (nonatomic, strong) NSString *isDeviceActivated;
+@property (nonatomic,strong)NSString *SuccessRegistration;
 
 
 @end
